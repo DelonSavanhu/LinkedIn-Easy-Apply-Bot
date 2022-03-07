@@ -7,6 +7,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -19,7 +20,9 @@ import yaml
 from datetime import datetime, timedelta
 
 log = logging.getLogger(__name__)
-driver = webdriver.Chrome(ChromeDriverManager().install())
+s=Service(ChromeDriverManager().install())
+driver = webdriver.Chrome(service=s)
+#driver = webdriver.Chrome(ChromeDriverManager().install())
 
 
 def setupLogger():
@@ -103,6 +106,9 @@ class EasyApplyBot:
             user_field = self.browser.find_element_by_id("username")
             pw_field = self.browser.find_element_by_id("password")
             login_button = self.browser.find_element_by_css_selector(".btn__primary--large")
+            #user_field = self.browser.find_element("#username")
+            #pw_field = self.browser.find_element("#password")
+            #login_button = self.browser.find_element(".btn__primary--large")
             user_field.send_keys(username)
             user_field.send_keys(Keys.TAB)
             time.sleep(2)
@@ -114,7 +120,7 @@ class EasyApplyBot:
             log.info("TimeoutException! Username/password field or login button not found")
 
     def fill_data(self):
-        self.browser.set_window_size(0, 0)
+        #self.browser.set_window_size(0, 0)
         self.browser.set_window_position(2000, 2000)
 
     def start_apply(self, positions, locations):
